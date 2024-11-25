@@ -1,36 +1,30 @@
-import React from "react";
-import TableLoader from "../partials/TableLoader";
-import Pills from "../partials/Pills";
 import {
   Archive,
   ArchiveRestore,
   FilePenLine,
-  FileVideo,
+  Plus,
   Trash2,
 } from "lucide-react";
-import LoadMore from "../partials/LoadMore";
-import SpinnerTable from "../partials/spinners/SpinnerTable";
-import IconNoData from "../partials/IconNoData";
-import IconServerError from "../partials/IconServerError";
+import React from "react";
+import TableLoader from "../../partials/TableLoader";
+import IconServerError from "../../partials/IconServerError";
+import Pills from "../../partials/Pills";
+import IconNoData from "../../partials/IconNoData";
 import { StoreContext } from "@/components/store/storeContext";
 import {
   setIsAdd,
   setIsConfirm,
   setIsDelete,
-  setIsEdit,
-  setIsView,
 } from "@/components/store/storeAction";
-import ModalDelete from "../partials/modals/ModalDelete";
-import ModalConfirm from "../partials/modals/ModalConfirm";
+import ModalDelete from "../../partials/modals/ModalDelete";
+import ModalConfirm from "../../partials/modals/ModalConfirm";
+import ModalAddGenre from "./ModalAddGenre";
 
-const MovieTable = () => {
+const Genre = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
-  };
-  const handleView = () => {
-    dispatch(setIsView(true));
   };
   const handleDelete = () => {
     dispatch(setIsDelete(true));
@@ -43,74 +37,80 @@ const MovieTable = () => {
   };
   return (
     <>
-      <div className="p-4 bg-secondary rounded-md mt-10 border border-line relative">
-        {/* <SpinnerTable /> */}
-        <div className="table-wrapper custom-scroll">
+      <div className="bg-secondary p-4 mt-5 border border-line rounded-md">
+        <button className="btn btn-add" onClick={() => handleAdd()}>
+          <Plus size={16} />
+          Add New
+        </button>
+        <div className="table-wrapper custom-scroll mt-5 max-h-[69vh]">
           {/* <TableLoader count={40} cols={10} /> */}
           <table>
             <thead>
               <tr>
                 <th>#</th>
                 <th>Status</th>
-                <th>Title</th>
-                <th>Year</th>
-                <th>Duration</th>
+                <th>Genre</th>
+
                 <th></th>
               </tr>
             </thead>
 
             <tbody>
               {/* <tr>
-                        <td colSpan={100}>
-                          <IconNoData />
-                        </td>
-                      </tr> 
-               <tr>
-                        <td colSpan={100}>
-                          <IconServerError />
-                        </td>
-                      </tr>  */}
+                <td colSpan={100}><IconNoData /></td>
+              </tr>
+              <tr>
+                <td colSpan={100}>
+                  <IconServerError />
+                </td>
+              </tr> */}
               {Array.from(Array(8).keys()).map((i) => (
-                <tr>
+                <tr key={i}>
                   <td>{i + 1}.</td>
                   <td>
                     <Pills />
                   </td>
-                  <td>Wedding Singer</td>
-                  <td>1997</td>
-                  <td>1hr 40mins</td>
+                  <td>Rom-com</td>
+
                   <td>
                     <ul className="table-action">
                       {true ? (
                         <>
                           <li>
-                            <button className="tooltip" data-tooltip="View">
-                              <FileVideo onClick={() => handleView()} />
+                            <button
+                              className="tooltip"
+                              data-tooltip="Edit"
+                              onClick={() => handleAdd()}
+                            >
+                              <FilePenLine />
                             </button>
                           </li>
                           <li>
-                            <button className="tooltip" data-tooltip="Edit">
-                              <FilePenLine onClick={() => handleAdd()} />
-                            </button>
-                          </li>
-                          <li>
-                            <button className="tooltip" data-tooltip="Archive">
-                              <Archive onClick={() => handleArchive()} />
+                            <button
+                              className="tooltip"
+                              data-tooltip="Archive"
+                              onClick={() => handleArchive()}
+                            >
+                              <Archive />
                             </button>
                           </li>
                         </>
                       ) : (
                         <>
                           <li>
-                            <button className="tooltip" data-tooltip="Restore">
-                              <ArchiveRestore onClick={() => handleRestore()} />
+                            <button
+                              className="tooltip"
+                              data-tooltip="Restore"
+                              onClick={() => handleRestore()}
+                            >
+                              <ArchiveRestore />
                             </button>
                           </li>
                           <li>
                             <button
                               className="tooltip"
                               data-tooltip="Delete"
-                              onClick={handleDelete}
+                              onClick={() => handleDelete()}
                             >
                               <Trash2 />
                             </button>
@@ -123,15 +123,13 @@ const MovieTable = () => {
               ))}
             </tbody>
           </table>
-
-          <LoadMore />
         </div>
       </div>
-
+      {store.isAdd && <ModalAddGenre />}
       {store.isDelete && <ModalDelete />}
       {store.isConfirm && <ModalConfirm />}
     </>
   );
 };
 
-export default MovieTable;
+export default Genre;

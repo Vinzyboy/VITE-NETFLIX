@@ -1,4 +1,5 @@
-import React from 'react'
+import { StoreContext } from "@/components/store/storeContext";
+import React from "react";
 
 const LoadMore = () => {
   return (
@@ -10,6 +11,6 @@ const LoadMore = () => {
       </div>
     </>
   );
-}
+};
 
-export default LoadMore
+export default LoadMore;

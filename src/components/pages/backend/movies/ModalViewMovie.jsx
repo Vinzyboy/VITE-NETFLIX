@@ -2,8 +2,16 @@ import React from "react";
 import ModalWrapper from "../partials/modals/ModalWrapper";
 import { imgPath } from "@/components/helpers/functions-general";
 import { Play, Plus, ThumbsUp, X } from "lucide-react";
+import { StoreContext } from "@/components/store/storeContext";
+import { setIsView } from "@/components/store/storeAction";
 
 const ModalViewMovie = () => {
+   const { dispatch } = React.useContext(StoreContext);
+
+   const handleClose = () => {
+     dispatch(setIsView(false));
+   };
+
   return (
     <ModalWrapper>
       <div
@@ -39,7 +47,10 @@ const ModalViewMovie = () => {
           </div>
           <div className="tint absolute bottom-0 left-0 w-full h-[70%] bg-gradient-to-t from-black to-transparent"></div>
 
-          <button className="absolute top-3 right-3 size-[35px] center-all text-dark bg-light rounded-full">
+          <button
+            className="absolute top-3 right-3 size-[35px] center-all text-dark bg-light rounded-full"
+            onClick={handleClose}
+          >
             <X />
           </button>
         </div>
@@ -48,6 +59,9 @@ const ModalViewMovie = () => {
           <div className="grid grid-cols-[1fr,_250px] gap-5">
             <div>
               <ul className="flex gap-3 items-center text-xs mb-3">
+                <li className="border-[1px] border-dark py-1 px-2.5 text-[12px] leading-none">
+                  <span className="translate-y-[1px] block">16+</span>
+                </li>
                 <li>2023</li>
                 <li>1hr 33mins</li>
                 <li className="border-[1px] border-dark py-[0.5px] px-1.5 text-[9px]">
@@ -89,6 +103,9 @@ const ModalViewMovie = () => {
                 <div className="p-4 bg-secondary">
                   <div className=" flex justify-between items-center mb-5">
                     <ul className="flex gap-3 items-center text-xs ">
+                      <li className="border-[1px] border-dark py-1 px-2.5 text-[12px] leading-none">
+                        <span className="translate-y-[1px] block">16+</span>
+                      </li>
                       <li>2023</li>
                       <li className="border-[1px] border-dark py-[0.5px] px-1.5 text-[9px]">
                         HD

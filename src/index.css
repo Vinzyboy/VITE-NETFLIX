@@ -138,6 +138,9 @@
   .table-wrapper table tbody tr:nth-child(odd) {
     @apply bg-primary;
   }
+  .table-wrapper table thead tr {
+    @apply bg-secondary;
+  }
   .table-wrapper table tbody tr td:first-child {
     @apply w-[30px];
   }

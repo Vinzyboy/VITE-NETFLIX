@@ -22,15 +22,20 @@ import {
 } from "@/components/store/storeAction";
 import ModalDelete from "../partials/modals/ModalDelete";
 import ModalConfirm from "../partials/modals/ModalConfirm";
+import { movie } from "./datamovies";
+import ModalViewMovie from "./ModalViewMovie";
 
 const MovieTable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-
+  const [movieInfo, setMovieInfo] = React.useState("");
+    let counter = 1;
+  
   const handleAdd = () => {
     dispatch(setIsAdd(true));
   };
-  const handleView = () => {
+  const handleView = (item) => {
     dispatch(setIsView(true));
+    setMovieInfo(item );
   };
   const handleDelete = () => {
     dispatch(setIsDelete(true));
@@ -70,22 +75,22 @@ const MovieTable = () => {
                           <IconServerError />
                         </td>
                       </tr>  */}
-              {Array.from(Array(8).keys()).map((i) => (
-                <tr>
-                  <td>{i + 1}.</td>
+              {movie.map((item, key) => (
+                <tr key={key}>
+                  <td>{counter++}.</td>
                   <td>
                     <Pills />
                   </td>
-                  <td>Wedding Singer</td>
-                  <td>1997</td>
-                  <td>1hr 40mins</td>
+                <td>{ item.movie_title}</td>
+                <td>{ item.movie_year}</td>
+                <td>{ item.movie_duration}</td>
                   <td>
                     <ul className="table-action">
-                      {true ? (
+                      {item.movie_is_active ? (
                         <>
                           <li>
                             <button className="tooltip" data-tooltip="View">
-                              <FileVideo onClick={() => handleView()} />
+                              <FileVideo onClick={() => handleView(item)} />
                             </button>
                           </li>
                           <li>
@@ -120,7 +125,9 @@ const MovieTable = () => {
                     </ul>
                   </td>
                 </tr>
-              ))}
+           ))}
+            
+              
             </tbody>
           </table>
 
@@ -128,6 +135,7 @@ const MovieTable = () => {
         </div>
       </div>
 
+       {store.isView && <ModalViewMovie  movieInfo={movieInfo}/>}
       {store.isDelete && <ModalDelete />}
       {store.isConfirm && <ModalConfirm />}
     </>

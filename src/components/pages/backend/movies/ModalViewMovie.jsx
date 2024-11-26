@@ -4,14 +4,24 @@ import { imgPath } from "@/components/helpers/functions-general";
 import { Play, Plus, ThumbsUp, X } from "lucide-react";
 import { StoreContext } from "@/components/store/storeContext";
 import { setIsView } from "@/components/store/storeAction";
+import { movie } from "./datamovies";
 
-const ModalViewMovie = () => {
-   const { dispatch } = React.useContext(StoreContext);
 
-   const handleClose = () => {
-     dispatch(setIsView(false));
-   };
+const ModalViewMovie = ({ movieInfo }) => {
+  const { dispatch } = React.useContext(StoreContext);
+const [randomize, setRandomize] = React.useState([]);
+  const handleClose = () => {
+    dispatch(setIsView(false));
+  };
 
+  React.useEffect(() => {
+    setRandomize(
+      movie
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+    );
+  }, []);
   return (
     <ModalWrapper>
       <div
@@ -20,12 +30,12 @@ const ModalViewMovie = () => {
       >
         <div className="modal-banner relative">
           <img
-            src={`${imgPath}/m-14.jpg`}
+            src={`${imgPath}/${movieInfo.movie_image}`}
             alt=""
             className="h-[350px] w-full object-cover rounded-md"
           />
           <div className="absolute bottom-6 left-6 z-40">
-            <h3 className="mb-3">Salamdinakdak</h3>
+            <h3 className="mb-3">{movieInfo.movie_title}</h3>
             <ul className="flex gap-2 items-center">
               <li>
                 <button className="flex gap-2 bg-dark px-4 py-1.5 rounded-md text-light font-bold">
@@ -60,28 +70,28 @@ const ModalViewMovie = () => {
             <div>
               <ul className="flex gap-3 items-center text-xs mb-3">
                 <li className="border-[1px] border-dark py-1 px-2.5 text-[12px] leading-none">
-                  <span className="translate-y-[1px] block">16+</span>
+                  <span className="translate-y-[1px] block">
+                    {movieInfo.movie_rating}
+                  </span>
                 </li>
-                <li>2023</li>
-                <li>1hr 33mins</li>
+                <li>{movieInfo.movie_year}</li>
+                <li>{movieInfo.movie_duration}</li>
                 <li className="border-[1px] border-dark py-[0.5px] px-1.5 text-[9px]">
                   HD
                 </li>
               </ul>
               <p className="text-xs leading-relaxed">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum
-                velit architecto sed? Hic ullam magnam quisquam eveniet
-                quibusdam totam nobis.
+                {movieInfo.movie_summary}
               </p>
             </div>
             <div className="space-y-3">
               <p className="text-xs leading-relaxed">
-                <span className="opacity-60 ">Cast:</span> Hanamichi Sakuragi
-                and Kaede Rukawa as well the primary supporting characters
-                Takenori Akagi, Ryota Miyagi, and Hisashi Mitsui
+                <span className="opacity-60 ">Cast:</span>
+                {movieInfo.movie_cast}
               </p>
               <p className="text-xs leading-relaxed">
-                <span className="opacity-60 ">Genre:</span> Anime
+                <span className="opacity-60 ">Genre:</span>
+                {movieInfo.movie_genre}
               </p>
             </div>
           </div>
@@ -89,24 +99,28 @@ const ModalViewMovie = () => {
 
         <div className="modal-more p-4">
           <div className="grid grid-cols-3 gap-5">
-            {Array.from(Array(3).keys()).map((i) => (
-              <div className="card rounded-md overflow-hidden">
+            {randomize.slice(0, 3).map((item, key) => (
+              <div className="card rounded-md overflow-hidden" key={key}>
                 <div className="relative ">
                   <img
-                    src={`${imgPath}/banner.webp`}
+                    src={`${imgPath}/${item.movie_image}`}
                     alt=""
                     className="w-full object-cover h-[120px]"
                   />
-                  <p className="absolute top-3 right-3 z-50">1h 5mins</p>
+                  <p className="absolute top-3 right-3 z-50">
+                    {item.movie_duration}
+                  </p>
                   <div className="tint bg-gradient-to-b from-[rgba(0,0,0,0.7)] to-transparent absolute top-0 left-0 w-full h-full"></div>
                 </div>
                 <div className="p-4 bg-secondary">
                   <div className=" flex justify-between items-center mb-5">
                     <ul className="flex gap-3 items-center text-xs ">
                       <li className="border-[1px] border-dark py-1 px-2.5 text-[12px] leading-none">
-                        <span className="translate-y-[1px] block">16+</span>
+                        <span className="translate-y-[1px] block">
+                          {item.movie_rating}
+                        </span>
                       </li>
-                      <li>2023</li>
+                      <li>{item.movie_year}</li>
                       <li className="border-[1px] border-dark py-[0.5px] px-1.5 text-[9px]">
                         HD
                       </li>
@@ -115,10 +129,8 @@ const ModalViewMovie = () => {
                       <Plus />
                     </button>
                   </div>
-                  <p className="text-xs text-balance leading-relaxed">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Similique totam consectetur consequatur natus aperiam quo
-                    unde
+                  <p className="text-xs text-balance leading-relaxed line-clamp-3">
+                    {item.movie_summary}
                   </p>
                 </div>
               </div>

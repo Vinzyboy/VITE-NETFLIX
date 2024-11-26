@@ -64,7 +64,7 @@ const Movie = () => {
       {store.success && <ToastSuccess />}
       {/* <SpinnerWindow/> */}
       {store.isAdd && <ModalAddMovie />}
-      {store.isView && <ModalViewMovie />}
+     
     </>
   );
 };
